@@ -31,6 +31,7 @@ public class CollectionUtils {
             if (i >= size)
                 break;
             newArray.add(element);
+            i++;
         }
         return newArray;
     }
