@@ -29,7 +29,7 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         long n = 5_000_000_000L;
         int numThreads = 5;
-        Callable<Integer> callable = new CalcSum(n, true);
+        Callable<Integer> callable = new CalcSum(n, false);
         Task<Integer> task = new Task<>(callable);
 
         Thread[] threads = new Thread[numThreads];
