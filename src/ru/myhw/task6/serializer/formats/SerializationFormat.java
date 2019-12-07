@@ -1,27 +1,14 @@
 package ru.myhw.task6.serializer.formats;
 
-import ru.myhw.task6.serializer.SerializationContext;
+import java.util.List;
+import java.util.Map;
 
 public interface SerializationFormat {
-    void serializePrimitive(StringBuilder builder, SerializationContext context, Object value);
+    String combineMap(Map<String, String> keyToElement);
 
-    void serializeBeforeKeyValue(StringBuilder builder, SerializationContext context, Object key);
+    String combineList(List<String> elements);
 
-    void serializeAfterKeyValue(StringBuilder builder, SerializationContext context, Object key);
+    String serializePrimitive(Object obj);
 
-    void serializeBeforeCollectionElement(StringBuilder builder, SerializationContext context);
-
-    void serializeAfterCollectionElement(StringBuilder builder, SerializationContext context);
-
-    void init(StringBuilder builder, SerializationContext context, Object object);
-
-    void finish(StringBuilder builder, SerializationContext context, Object object);
-
-    void initMap(StringBuilder builder, SerializationContext context);
-
-    void finishMap(StringBuilder builder, SerializationContext context);
-
-    void initCollection(StringBuilder builder, SerializationContext context);
-
-    void finishCollection(StringBuilder builder, SerializationContext context);
+    String finishSerialization(Object obj, String body);
 }

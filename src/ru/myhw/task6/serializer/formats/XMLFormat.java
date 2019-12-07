@@ -1,8 +1,11 @@
 package ru.myhw.task6.serializer.formats;
 
-import ru.myhw.task6.serializer.SerializationContext;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static ru.myhw.task6.serializer.Utils.fillIndent;
+import static ru.myhw.task6.serializer.Utils.*;
 
 public class XMLFormat implements SerializationFormat {
     private final int indent;
@@ -12,78 +15,44 @@ public class XMLFormat implements SerializationFormat {
     }
 
     @Override
-    public void serializePrimitive(StringBuilder builder, SerializationContext context, Object value) {
-        if (value != null)
-            builder.append(value.toString());
+    public String combineMap(Map<String, String> keyToElement) {
+        ArrayList<String> mapElements = new ArrayList<>();
+        keyToElement.forEach((k, v) -> mapElements.add(combineKeyValue(k, v)));
+        return String.join("\n", mapElements);
     }
 
     @Override
-    public void serializeBeforeKeyValue(StringBuilder builder, SerializationContext context, Object key) {
-        fillIndent(builder, context.getIndent());
-        writeStartTag(builder, key);
+    public String combineList(List<String> elements) {
+        return elements.stream()
+                .map(e -> combineKeyValue("element", e))
+                .collect(Collectors.joining("\n"));
     }
 
     @Override
-    public void serializeAfterKeyValue(StringBuilder builder, SerializationContext context, Object key) {
-        writeEndTag(builder, key);
-        builder.append("\n");
+    public String serializePrimitive(Object obj) {
+        return obj != null ? obj.toString() : "";
     }
 
     @Override
-    public void serializeBeforeCollectionElement(StringBuilder builder, SerializationContext context) {
-        serializeBeforeKeyValue(builder, context, "element");
+    public String finishSerialization(Object obj, String body) {
+        return combineKeyValue(obj.getClass().getName(), body);
     }
 
-    @Override
-    public void serializeAfterCollectionElement(StringBuilder builder, SerializationContext context) {
-        serializeAfterKeyValue(builder, context, "element");
+    private String combineKeyValue(String k, String v) {
+        String body;
+        if (v.contains("<")) {
+            body = "\n" + shiftBlock(v, this.indent) + "\n";
+        } else {
+            body = v;
+        }
+        return getStartTag(k) + body + getEndTag(k);
     }
 
-    @Override
-    public void init(StringBuilder builder, SerializationContext context, Object object) {
-        writeStartTag(builder, object.getClass().getName());
+    private String getStartTag(Object key) {
+        return "<" + key.toString() + ">";
     }
 
-    @Override
-    public void finish(StringBuilder builder, SerializationContext context, Object object) {
-        writeEndTag(builder, object.getClass().getName());
-    }
-
-    @Override
-    public void initMap(StringBuilder builder, SerializationContext context) {
-        initBlock(builder, context);
-    }
-
-    @Override
-    public void finishMap(StringBuilder builder, SerializationContext context) {
-        finishBlock(builder, context);
-    }
-
-    @Override
-    public void initCollection(StringBuilder builder, SerializationContext context) {
-        initBlock(builder, context);
-    }
-
-    @Override
-    public void finishCollection(StringBuilder builder, SerializationContext context) {
-        finishBlock(builder, context);
-    }
-
-    private void initBlock(StringBuilder builder, SerializationContext context) {
-        builder.append("\n");
-        context.addIndent(this.indent);
-    }
-
-    private void finishBlock(StringBuilder builder, SerializationContext context) {
-        context.deleteIndent();
-        fillIndent(builder, context.getIndent());
-    }
-
-    private void writeStartTag(StringBuilder builder, Object key) {
-        builder.append("<").append(key.toString()).append(">");
-    }
-
-    private void writeEndTag(StringBuilder builder, Object key) {
-        builder.append("</").append(key.toString()).append(">");
+    private String getEndTag(Object key) {
+        return "</" + key.toString() + ">";
     }
 }

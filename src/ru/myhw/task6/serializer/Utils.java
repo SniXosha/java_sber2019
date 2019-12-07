@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class Utils {
 
-    public static void fillIndent(StringBuilder builder, int indent) {
-        builder.append(String.join("", Collections.nCopies(indent, " ")));
+    public static String getIndent(int indent) {
+        return String.join("", Collections.nCopies(indent, " "));
     }
 
     public static Map<String, Object> getDeclaredFields(Object obj) {
@@ -23,5 +23,13 @@ public class Utils {
             }
         }
         return map;
+    }
+
+    public static String shiftBlockPartially(String s, int indent) {
+        return String.join("\n" + getIndent(indent), s.split("\n"));
+    }
+
+    public static String shiftBlock(String s, int indent) {
+        return getIndent(indent) + shiftBlockPartially(s, indent);
     }
 }

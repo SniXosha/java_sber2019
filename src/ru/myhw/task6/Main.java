@@ -1,7 +1,8 @@
 package ru.myhw.task6;
 
+import ru.myhw.task6.serializer.Serializer;
 import ru.myhw.task6.serializer.formats.JSONFormat;
-import ru.myhw.task6.serializer.RecursiveSerializer;
+import ru.myhw.task6.serializer.ObjectSerializer;
 import ru.myhw.task6.serializer.formats.XMLFormat;
 
 import java.util.Arrays;
@@ -44,10 +45,10 @@ public class Main {
         Doctor doctor2 = new Doctor("John", 2, null, Arrays.asList("1", "2", "3"), Map.of(doctor3, doctor3), hands);
         Doctor doctor = new Doctor("Alex", 4, doctor2, Arrays.asList(1, 2, 3), null, hands);
 
-        RecursiveSerializer jsonRecursiveSerializer = new RecursiveSerializer(new JSONFormat(4));
+        Serializer jsonRecursiveSerializer = new ObjectSerializer(new JSONFormat(4));
         System.out.println(jsonRecursiveSerializer.serialize(doctor));
 
-        RecursiveSerializer xmlRecursiveSerializer = new RecursiveSerializer(new XMLFormat(4));
+        Serializer xmlRecursiveSerializer = new ObjectSerializer(new XMLFormat(4));
         System.out.println(xmlRecursiveSerializer.serialize(doctor));
     }
 }
