@@ -16,7 +16,12 @@ public class TimeMeasureProxy implements InvocationHandler {
 
     @SuppressWarnings("unchecked")
     public static <T> T create(T delegate) {
+        return (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
+                getInterfaces(delegate),
+                new TimeMeasureProxy(delegate));
+    }
 
+    private static <T> Class<?>[] getInterfaces(T delegate) {
         Class<?> clazz = delegate.getClass();
         ArrayList<Class<?>> allInterfaces = new ArrayList<>();
         while (clazz != null) {
@@ -24,15 +29,11 @@ public class TimeMeasureProxy implements InvocationHandler {
             allInterfaces.addAll(Arrays.asList(interfaces));
             clazz = clazz.getSuperclass();
         }
-
-        return (T) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(),
-                allInterfaces.toArray(new Class<?>[allInterfaces.size()]),
-                new TimeMeasureProxy(delegate));
+        return allInterfaces.toArray(new Class<?>[allInterfaces.size()]);
     }
 
     @Override
     public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-
         long startTime = System.currentTimeMillis();
         Object result = method.invoke(delegate, objects);
         long endTime = System.currentTimeMillis();

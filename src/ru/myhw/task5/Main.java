@@ -1,9 +1,11 @@
 package ru.myhw.task5;
 
-public class Main {
+import ru.myhw.task5.exampleclasses.Dancing;
+import ru.myhw.task5.exampleclasses.Doctor;
 
-    public static void main(String[] args) throws IllegalAccessException, InterruptedException {
-        Dancing d = TimeMeasureProxy.create(new Doctor("Kek", 1));
+public class Main {
+    public static void main(String[] args) {
+        Dancing d = TimeMeasureProxy.create(new Doctor("Igor", 1));
         d.dance();
     }
 }
