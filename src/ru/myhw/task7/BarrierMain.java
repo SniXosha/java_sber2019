@@ -11,18 +11,15 @@ public class BarrierMain {
 
         for (int i = 0; i < n; ++i) {
             int threadNum = i;
-            threads[i] = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println(threadNum);
-                    try {
-                        Thread.sleep(1000 * threadNum);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    barrier.await();
-                    System.out.printf("end %d\n", threadNum);
+            threads[i] = new Thread(() -> {
+                System.out.println(threadNum);
+                try {
+                    Thread.sleep(1000 * threadNum);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+                barrier.await();
+                System.out.printf("end %d\n", threadNum);
             });
             threads[i].start();
         }

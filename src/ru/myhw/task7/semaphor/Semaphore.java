@@ -17,16 +17,16 @@ public class Semaphore {
         currentThreadCount++;
     }
 
+    public synchronized void unlock() {
+        currentThreadCount -= 1;
+        this.notify();
+    }
+
     private void await() {
         try {
             this.wait();
         } catch (InterruptedException e) {
             throw new RuntimeException();
         }
-    }
-
-    public synchronized void unlock() {
-        currentThreadCount -= 1;
-        this.notify();
     }
 }
