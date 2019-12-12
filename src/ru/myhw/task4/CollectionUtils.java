@@ -67,7 +67,7 @@ public class CollectionUtils {
     public static <L, T extends Comparable<? super L>> List<L> range(List<L> list, T min, T max) {
         List<L> newArray = CollectionUtils.newArrayList();
         for (L element : list) {
-            if (min.compareTo(element) <= 0 && max.compareTo(element) >= 0 ) {
+            if (min.compareTo(element) <= 0 && max.compareTo(element) >= 0) {
                 newArray.add(element);
             }
         }
@@ -77,7 +77,7 @@ public class CollectionUtils {
     public static <L, T extends L> List<L> range(List<L> list, T min, T max, Comparator<? super L> comparator) {
         List<L> newArray = CollectionUtils.newArrayList();
         for (L element : list) {
-            if (comparator.compare(min, element) <= 0 && comparator.compare(max, element) >= 0 ) {
+            if (comparator.compare(min, element) <= 0 && comparator.compare(max, element) >= 0) {
                 newArray.add(element);
             }
         }
