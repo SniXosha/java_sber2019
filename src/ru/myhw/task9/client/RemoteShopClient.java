@@ -1,7 +1,8 @@
-package ru.myhw.task9;
+package ru.myhw.task9.client;
 
 import ru.sbt.shop.Order;
 import ru.sbt.shop.Result;
+import ru.sbt.shop.ShopClient;
 
 import java.io.IOException;
 

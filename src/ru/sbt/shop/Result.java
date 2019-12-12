@@ -15,6 +15,8 @@ public class Result implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString();
+        return "Result{" +
+                "status=" + status +
+                '}';
     }
 }

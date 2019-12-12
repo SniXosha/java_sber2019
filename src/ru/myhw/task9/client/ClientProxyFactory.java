@@ -1,6 +1,6 @@
-package ru.myhw.task9;
+package ru.myhw.task9.client;
 
-import ru.sbt.shop.Message;
+import ru.sbt.shop.MethodCallMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -25,11 +25,11 @@ public class ClientProxyFactory implements InvocationHandler {
 
     @Override
     public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
-        Message message = new Message(method.getName(), objects);
+        MethodCallMessage message = new MethodCallMessage(method.getName(), objects);
         return process(message);
     }
 
-    private Object process(Message message) throws IOException, ClassNotFoundException {
+    private Object process(MethodCallMessage message) throws IOException, ClassNotFoundException {
         return new RemoteMethodCaller(host, port).call(message);
     }
 }
