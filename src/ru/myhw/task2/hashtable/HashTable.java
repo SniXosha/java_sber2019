@@ -14,7 +14,7 @@ public class HashTable<K, V> {
         this.size = 0;
         this.capacity = capacity;
         this.maxLoadFactor = maxLoadFactor;
-        initStorage();
+        this.storage = getEmptyStorage(capacity);
     }
 
     public HashTable(int capacity) {
@@ -28,7 +28,7 @@ public class HashTable<K, V> {
     public void put(K key, V value) {
         int ind = findElement(storage, key);
         if (storage[ind] != null) {
-            storage[ind] = new Node<>(key, value);
+            storage[ind] = Node.of(key, value);
             return;
         }
         double currentLoadFactor = (double) (size + 1) / capacity;
@@ -36,7 +36,7 @@ public class HashTable<K, V> {
             rehash();
             ind = findElement(storage, key);
         }
-        storage[ind] = new Node<>(key, value);
+        storage[ind] = Node.of(key, value);
         size++;
     }
 
@@ -88,8 +88,8 @@ public class HashTable<K, V> {
     }
 
     @SuppressWarnings("unchecked")
-    private void initStorage() {
-        this.storage = new Node[capacity];
+    private Node<K,V>[] getEmptyStorage(int capacity) {
+        return new Node[capacity];
     }
 
     private int getHashIndex(Object element, int n) {
@@ -105,24 +105,18 @@ public class HashTable<K, V> {
         return ind;
     }
 
-    private void insertIntoStorage(Node<K, V>[] s, Node<K, V> kvNode) {
-        int ind = findElement(s, kvNode.getKey());
-        s[ind] = kvNode;
-    }
-
-    @SuppressWarnings("unchecked")
     private void rehash() {
         int newCapacity = capacity * 2;
-        Node<K, V>[] newStorage = new Node[newCapacity];
+        Node<K, V>[] newStorage = getEmptyStorage(newCapacity);
 
         for (int i = 0; i < capacity; i++) {
-            if (storage[i] != null)
-                insertIntoStorage(newStorage, storage[i]);
+            if (storage[i] != null) {
+                int ind = findElement(newStorage, storage[i].getKey());
+                newStorage[ind] = storage[i];
+            }
         }
         storage = newStorage;
         capacity = newCapacity;
     }
-
-
 
 }
