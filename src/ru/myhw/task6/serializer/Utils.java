@@ -7,6 +7,10 @@ import java.util.Map;
 
 public class Utils {
 
+    private Utils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static String getIndent(int indent) {
         return String.join("", Collections.nCopies(indent, " "));
     }

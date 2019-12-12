@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import static ru.myhw.task6.serializer.Utils.*;
 
-
 public class JSONFormat implements SerializationFormat {
 
     private final int indent;
