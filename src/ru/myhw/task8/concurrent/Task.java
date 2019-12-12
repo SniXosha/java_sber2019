@@ -36,7 +36,7 @@ public class Task<T> {
         if (!callAssigned) {
             synchronized (this) {
                 if (!callAssigned) {
-                   doCall = callAssigned = true;
+                    doCall = callAssigned = true;
                 }
             }
         }
