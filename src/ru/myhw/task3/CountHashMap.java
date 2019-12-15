@@ -9,7 +9,7 @@ public class CountHashMap<K> implements CountMap<K> {
     private HashMap<K, Integer> hashMap;
 
     CountHashMap() {
-        this.hashMap = new HashMap<K, Integer>();
+        this.hashMap = new HashMap<>();
     }
 
     @Override
@@ -19,14 +19,12 @@ public class CountHashMap<K> implements CountMap<K> {
 
     @Override
     public int getCount(K key) {
-        Integer count = hashMap.get(key);
-        return Objects.requireNonNullElse(count, 0);
+        return Objects.requireNonNullElse(hashMap.get(key), 0);
     }
 
     @Override
     public int remove(K key) {
-        Integer count = hashMap.remove(key);
-        return Objects.requireNonNullElse(count, 0);
+        return Objects.requireNonNullElse(hashMap.remove(key), 0);
     }
 
     @Override
@@ -36,10 +34,7 @@ public class CountHashMap<K> implements CountMap<K> {
 
     @Override
     public void addAll(CountMap<? extends K> source) {
-        Map<? extends K, ? extends Integer> sourceMap = source.toMap();
-        for (Map.Entry<? extends K, ? extends Integer> entry : sourceMap.entrySet()) {
-            hashMap.merge(entry.getKey(), entry.getValue(), Integer::sum);
-        }
+        source.toMap().forEach((key, value) -> hashMap.merge(key, value, Integer::sum));
     }
 
     @Override
